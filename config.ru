@@ -7,5 +7,7 @@ end
 #here is where I will mount other controllers with 'use'
 
 #in order to send PATCH and DELETE requests this code
-'use Rack::MethodOverrdide'
+use Rack::MethodOverrdide
 run ApplicationController
+use PostsController
+use UsersController
