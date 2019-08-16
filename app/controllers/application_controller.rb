@@ -13,15 +13,16 @@ class ApplicationController < Sinatra::Base
     erb :welcome
   end
 
-  get 'login' do
+  get '/login' do
+    erb :login
   end
 
-  post 'login' do
+  post '/login' do
     @user = User.create(params[:user])
     session[:user_id] = @user.id
   end
 
-  get 'logout' do
+  get '/logout' do
     session.destroy
     redirect '/'
   end

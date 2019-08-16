@@ -1,1 +1,15 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <link rel="stylesheet" href="stylesheets/bootstrap.css" type="text/css">
+  </head>
+  <body id="page-top">
+    <% if Helpers.is_logged_in?(session) %>
+      <h1>Namaste, <%= Helpers.current_user(session).username %></h1>
+      <h3>Your posts <%= Helpers.current_user(session).posts %></h3>
+
+      <h4><a href="/logout">Log Out</a></h4>
+    <% end %>
+  </body>

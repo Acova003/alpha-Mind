@@ -1,4 +1,4 @@
 class User < ActiveRecord::Base
   has_secure_password
-  had_many :posts
+  has_many :posts
 end
