@@ -1,37 +1,33 @@
 class UsersController < ApplicationController
 
   # GET: /users
+
+  #render form
   get '/login' do
     erb :login
   end
 
+  #create a session
   post '/login' do
+    #recieve the input from login form
+    #find user
+    #authenticate user
+    #log them in- creating a session
     @user = User.create(params[:user])
-    session[:user_id] = @user.id
+    if @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      #log them in -creating a sessions
+      #redirects to user profile
+      redirect "users/#{@user.id}"
+    else
+      #show error
+      #redirect to login mapge
+    end
   end
 
   get '/logout' do
     session.destroy
     redirect '/'
-  end
-  
-  get "/users" do
-    erb :"/users/index.html"
-  end
-
-  # GET: /users/new
-  get "/users/new" do
-    erb :"/users/new.html"
-  end
-
-  # POST: /users
-  post "/users" do
-    redirect "/users"
-  end
-
-  # GET: /users/5/edit
-  get "/users/:id/edit" do
-    erb :"/users/edit.html"
   end
 
   # PATCH: /users/5
