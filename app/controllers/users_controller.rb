@@ -14,14 +14,13 @@ class UsersController < ApplicationController
     #authenticate user
     #log them in- creating a session
     @user = User.create(params[:user])
-    if @user.authenticate(params[:password])
+    if @user != nil && @user.password == params[:password]
       session[:user_id] = @user.id
       #log them in -creating a sessions
       #redirects to user profile
       redirect "users/#{@user.id}"
     else
-      #show error
-      #redirect to login mapge
+      redirect '/login'
     end
   end
 
@@ -41,16 +40,20 @@ class UsersController < ApplicationController
   get '/signup' do
     #render my sign form
     #that form would point to a post '/users' method
+    
   end
 
   post '/users' do
     #only create user is they provide username, email, and password
-    #if all data is present
-      #add key/value pair
-      #redirect to user profile
-    #else
-      #try again
-    redirect_if_not_logged_in?
+    #add key/value pair
+    #redirect to user profile
+    @user = User.find_by(:username => params[:username])
+    if @user != nil && @user.password == params[:password]
+      session[:user_id] = @user.id
+      redirect to '/users/:id'
+    else
+      redirect_if_not_logged_in?
+    end
   end
 
   # DELETE: /users/5/delete
