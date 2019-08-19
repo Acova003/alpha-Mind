@@ -40,24 +40,31 @@ class UsersController < ApplicationController
   get '/signup' do
     #render my sign form
     #that form would point to a post '/users' method
-    
+    erb :signup
   end
 
   post '/users' do
     #only create user is they provide username, email, and password
     #add key/value pair
     #redirect to user profile
-    @user = User.find_by(:username => params[:username])
-    if @user != nil && @user.password == params[:password]
-      session[:user_id] = @user.id
-      redirect to '/users/:id'
+    #@user = User.find_by(:username => params[:username])
+    #session[:user_id] = @user.id
+    if params[:name] != "" && params[:email] !="" && params[:password] !=""
+      @user = User.create(params)
+      redirect "/users/#{@user.id}"
     else
-      redirect_if_not_logged_in?
+      redirect_if_not_logged_in
     end
+    #if @user != nil && @user.password == params[:password]
+      #session[:user_id] = @user.id
+      #redirect to '/users/:id'
+    #else
+      #redirect_if_not_logged_in?
+    #end
   end
 
-  # DELETE: /users/5/delete
-  delete "/users/:id/delete" do
-    redirect "/users"
+  get 'users/:id' do
+    #@user = User.find_by(id: params[:id])
+    erb :'/users/show'
   end
 end
