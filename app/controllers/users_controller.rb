@@ -13,8 +13,11 @@ class UsersController < ApplicationController
     #find user
     #authenticate user
     #log them in- creating a session
-    @user = User.create(params[:user])
-    if @user != nil && @user.password == params[:password]
+    @user = User.find_by_username(params[:username])
+    puts @user
+    puts @user.password
+    puts params
+    if @user != nil && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       #log them in -creating a sessions
       #redirects to user profile
@@ -48,9 +51,10 @@ class UsersController < ApplicationController
     #add key/value pair
     #redirect to user profile
     #@user = User.find_by(:username => params[:username])
-    #session[:user_id] = @user.id
+
     if params[:name] != "" && params[:email] !="" && params[:password] !=""
       @user = User.create(params)
+      session[:user_id] = @user.id
       redirect "/users/#{@user.id}"
     else
       redirect_if_not_logged_in
@@ -63,7 +67,7 @@ class UsersController < ApplicationController
     #end
   end
 
-  get 'users/:id' do
+  get '/users/:id' do
     #@user = User.find_by(id: params[:id])
     erb :'/users/show'
   end
