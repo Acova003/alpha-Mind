@@ -19,10 +19,17 @@ class PostsController < ApplicationController
   #get 'post/new' render a form to create a new post
   #post route to create a new post
 
+  get 'posts/new' do
+    erb ':posts/new'
+  end
+
   #UPDATE
   #get 'post/edit' to render the form for editing posts
   #patch route to update a post
-
+  post "/posts" do
+    #@post = Post.create(nameofparam params[:paramname])
+    redirect "/posts/#{@post.id}"
+  end
   #DELETE
   #delete route to an existing post
   get "/posts" do
