@@ -34,7 +34,7 @@ class PostsController < ApplicationController
   #delete route to an existing post
   get "/posts" do
     @posts = current_user.posts
-    erb :"/posts/index.html"
+    redirect "/posts/#{@post.id}"
   end
 
   # GET: /posts/new
@@ -65,6 +65,9 @@ class PostsController < ApplicationController
 
   # DELETE: /posts/5/delete
   delete "/posts/:id/delete" do
-    redirect "/posts"
+    @post = Post.find(params[:id])
+    @post.destroy
+    redirect "/posts" 
+
   end
 end

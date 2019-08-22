@@ -1,2 +1,8 @@
 <h1>This is the show page for an individual instance of your model.</h1>
 #enter title here @post.title (date of post)
+#add edit and delete
+
+<form class="" action="/posts/<%= @post.id %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <input type="submit" name="" value="Delete Post"
+</form>
