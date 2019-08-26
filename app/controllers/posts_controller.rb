@@ -20,16 +20,23 @@ class PostsController < ApplicationController
   #post route to create a new post
 
   get 'posts/new' do
-    erb ':posts/new'
+    erb ':/posts/new'
   end
 
   #UPDATE
   #get 'post/edit' to render the form for editing posts
   #patch route to update a post
   post "/posts" do
-    #@post = Post.create(nameofparam params[:paramname])
-    redirect "/posts/#{@post.id}"
+    @post = Post.new(content: params[:content], rating: params[:rating], user_id: params[:user_id])
+    if @post.save
+        flash[:message] = "Post successfully created."
+        redirect "/posts/#{@post.id}"
+    else
+      flash[:errors] = "Please enter all fields"
+      redirect "/posts/new"
+    end
   end
+
   #DELETE
   #delete route to an existing post
   get "/posts" do
@@ -42,32 +49,23 @@ class PostsController < ApplicationController
     erb :"/posts/new.html"
   end
 
-  # POST: /posts
-  post "/posts" do
-    redirect "/posts"
-  end
-
-  # GET: /posts/5
-  get "/posts/:id" do
-    @post = Post.find(params[:id])
-    erb :"/posts/show.html"
-  end
-
   # GET: /posts/5/edit
-  get "/posts/:id/edit" do
-    erb :"/posts/edit.html"
+  get '/posts/:id/edit' do
+    @post = post.find(params[:id])
+    erb :'/posts/edit'
   end
 
   # PATCH: /posts/5
   patch "/posts/:id" do
-    redirect "/posts/:id"
+    @post = Post.find(params[:id])
+    @post.update(content: params[:content], rating: params[:rating])
+    redirect "/posts/#{@post.id}"
   end
 
   # DELETE: /posts/5/delete
-  delete "/posts/:id/delete" do
+  delete "/posts/:id" do
     @post = Post.find(params[:id])
     @post.destroy
-    redirect "/posts" 
-
+    redirect "/posts"
   end
 end

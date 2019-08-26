@@ -13,16 +13,14 @@ class UsersController < ApplicationController
     #find user
     #authenticate user
     #log them in- creating a session
-    @user = User.find_by_username(params[:username])
-    puts @user
-    puts @user.password
-    puts params
-    if @user != nil && @user.authenticate(params[:password])
+    @user = User.find_by(username: params[:username])
+    if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      #log them in -creating a sessions
-      #redirects to user profile
+      #success message
       redirect "users/#{@user.id}"
     else
+      #show error comment
+      flash[:errors] = "Wrong credentials!"
       redirect '/login'
     end
   end
@@ -68,7 +66,7 @@ class UsersController < ApplicationController
   end
 
   get '/users/:id' do
-    #@user = User.find_by(id: params[:id])
+    @user = User.find_by(id: params[:id])
     erb :'/users/show'
   end
 end
