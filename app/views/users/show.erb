@@ -8,7 +8,13 @@
   <body id="page-top">
     <% if logged_in? %>
       <h1>Namaste, <%= current_user.username %></h1>
-      <h3>Your posts <%= current_user.posts %></h3>
+      <h3>Your posts:</h3>
+      <% @posts.each do |post| %>
+        <h4><a href="/posts/<%= post.id %>"><%= post.created_at %></a></h4>
+        <strong>Anxiety Rating:<%=post.rating %></strong>
+        <p><%= post.content %></p>
+        <p>By: <%= current_user.username %></p>
+      <% end %>
 
       <h4><a href="/logout">Log Out</a></h4>
     <% end %>

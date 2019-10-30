@@ -7,20 +7,13 @@ class PostsController < ApplicationController
   get '/posts' do
     #needs to save posts into a variable to reference in views
     @posts = Post.all
-    erb :'posts/index'
-  end
-  #Index route for all posts #show out for single post
-
-  get '/posts/:id' do
-    @post = Post.find(params[:id])
-    erb ':/posts/show'
+    erb :'/posts/index'
   end
   #CREATE
   #get 'post/new' render a form to create a new post
   #post route to create a new post
-
-  get 'posts/new' do
-    erb ':/posts/new'
+  get '/posts/new' do
+    erb :'/posts/new'
   end
 
   #UPDATE
@@ -37,6 +30,11 @@ class PostsController < ApplicationController
     end
   end
 
+  get '/posts/:id' do
+    @post = Post.find(params[:id])
+    erb :'/posts/show'
+  end
+
   #DELETE
   #delete route to an existing post
   get "/posts" do
@@ -51,8 +49,13 @@ class PostsController < ApplicationController
 
   # GET: /posts/5/edit
   get '/posts/:id/edit' do
-    @post = post.find(params[:id])
-    erb :'/posts/edit'
+    @post = Post.find(params[:id])
+    if authorized_user(@post)
+      erb :'/posts/edit'
+    else
+      flash[:message] = "You're not authorized to edit this post"
+      redirect "/posts/#{@post.id}"
+    end
   end
 
   # PATCH: /posts/5

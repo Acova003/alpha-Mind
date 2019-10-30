@@ -16,7 +16,6 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username])
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      #success message
       redirect "users/#{@user.id}"
     else
       #show error comment
@@ -48,25 +47,21 @@ class UsersController < ApplicationController
     #only create user is they provide username, email, and password
     #add key/value pair
     #redirect to user profile
-    #@user = User.find_by(:username => params[:username])
+    @user = User.find_by(:username => params[:username])
 
-    if params[:name] != "" && params[:email] !="" && params[:password] !=""
+    if @user == nil && params[:name] != "" && params[:email] !="" && params[:password] !=""
       @user = User.create(params)
       session[:user_id] = @user.id
       redirect "/users/#{@user.id}"
     else
-      redirect_if_not_logged_in
+      flash[:message] = "You already have an account. Please login"
+      redirect_if_not_logged_in?
     end
-    #if @user != nil && @user.password == params[:password]
-      #session[:user_id] = @user.id
-      #redirect to '/users/:id'
-    #else
-      #redirect_if_not_logged_in?
-    #end
   end
 
   get '/users/:id' do
     @user = User.find_by(id: params[:id])
+    @posts = @user.posts
     erb :'/users/show'
   end
 end
