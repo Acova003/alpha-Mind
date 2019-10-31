@@ -49,7 +49,8 @@ class UsersController < ApplicationController
     #redirect to user profile
     @user = User.find_by(:username => params[:username])
 
-    if @user == nil && params[:name] != "" && params[:email] !="" && params[:password] !=""
+    #activerecord validation
+    if @user.save
       @user = User.create(params)
       session[:user_id] = @user.id
       redirect "/users/#{@user.id}"
